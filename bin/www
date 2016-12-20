@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-var app = require('../api');
+var app = require('../server');
 var debug = require('debug')('capstone:server');
 var http = require('http');
 
