@@ -27,10 +27,21 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, `public`)))
+app.use(passport.initialize())
 
 // app.use(`/`, routes)
 app.use(`/users`, users)
 app.use(`/auth`, auth)
+
+passport.serializeUser((user, done) => {
+  done(null, user.id)
+})
+
+passport.deserializeUser((id, done) => {
+  User.findById(id, (err, user) => {
+    done(err, user)
+  })
+})
 
 passport.use(new FitbitStrategy({
   consumerKey: `2286Q9`,
