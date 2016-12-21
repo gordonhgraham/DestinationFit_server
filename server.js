@@ -1,5 +1,9 @@
 'use strict'
 
+if (process.env.NODE_ENV !== `production`) {
+  require(`dotenv`).config()
+}
+
 const express = require(`express`)
 const path = require(`path`)
 // const favicon = require(`serve-favicon`)
@@ -33,24 +37,53 @@ app.use(passport.initialize())
 app.use(`/users`, users)
 app.use(`/auth`, auth)
 
-passport.serializeUser((user, done) => {
-  done(null, user.id)
-})
-
-passport.deserializeUser((id, done) => {
-  User.findById(id, (err, user) => {
-    done(err, user)
-  })
-})
+// passport.serializeUser((user, done) => {
+//   done(null, user.id)
+// })
+//
+// passport.deserializeUser((id, done) => {
+//   User.findById(id, (err, user) => {
+//     done(err, user)
+//   })
+// })
 
 passport.use(new FitbitStrategy({
-    clientID: `2286Q9`,
-    clientSecret: `3405601f2ca6fd8202d7341362a1c509`,
-    callbackURL: "http://127.0.0.1:3000/auth/fitbit/callback"
+    clientID: process.env.fitbit_clientID,
+    clientSecret: process.env.fitbit_clientSecret,
+    callbackURL: `http://127.0.0.1:3000/auth/fitbit/callback`
   },
   (accessToken, refreshToken, profile, done) => {
-    User.findOrCreate({ fitbitId: profile.id }, (err, user) => {
-      return done(err, user)
+    const user = {
+      display_name: profile.displayName,
+      fitbit_id: profile.id,
+      accessToken,
+      refreshToken,
+      avatar: profile._json.user.avatar,
+      gender: profile._json.user.gender,
+      height: profile._json.user.height,
+      stride_length: profile._json.user.strideLengthWalking
+
+      // step_count: profile.id,
+      // step_goal: profile.id
+    }
+
+/* stuff from passport, rewrite and delete */
+    // User.findOrCreate({ fitbitId: profile.id }, (err, user) => {
+    //   return done(err, user)
+    // })
+
+    dbCall.readUser(user.fitbit_id)
+      .then(result => {
+        if (result) {
+          // udpate user
+          // dbCall.updateUser(result)
+        } else {
+          // create user
+          dbCall.createUser(user)
+            .then()
+
+            // .catch(err => /* what do I put here to handle errors */ )
+        }
     })
   }
 ))
