@@ -7,7 +7,7 @@ const logger = require(`morgan`)
 const cookieParser = require(`cookie-parser`)
 const bodyParser = require(`body-parser`)
 const passport = require(`passport`)
-const FitbitStrategy = require(`passport-fitbit`)
+const FitbitStrategy = require(`passport-fitbit-oauth2`).FitbitOAuth2Strategy
 
 // const routes = require(`./routes/index`)
 const users = require(`./routes/users`)
@@ -44,13 +44,13 @@ passport.deserializeUser((id, done) => {
 })
 
 passport.use(new FitbitStrategy({
-  consumerKey: `2286Q9`,
-  consumerSecret: `3405601f2ca6fd8202d7341362a1c509`,
-  callbackURL: `http://127.0.0.1:3000/auth/fitbit/callback`
-},
-  (token, tokenSecret, profile, cb) => {
+    clientID: `2286Q9`,
+    clientSecret: `3405601f2ca6fd8202d7341362a1c509`,
+    callbackURL: "http://127.0.0.1:3000/auth/fitbit/callback"
+  },
+  (accessToken, refreshToken, profile, done) => {
     User.findOrCreate({ fitbitId: profile.id }, (err, user) => {
-      return cb(err, user)
+      return done(err, user)
     })
   }
 ))

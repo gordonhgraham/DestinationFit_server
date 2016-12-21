@@ -4,9 +4,9 @@ const express = require(`express`)
 const router = express.Router()
 const passport = require(`passport`)
 
-router.get(`/auth/fitbit`, passport.authenticate(`fitbit`))
+router.get(`/fitbit`, passport.authenticate(`fitbit`))
 
-router.get(`/auth/fitbit/callback`,
+router.get(`/fitbit/callback`,
   passport.authenticate(`fitbit`, { failureRedirect: `/login` }),
   (req, res) => {
     // Successful authentication, redirect home.
