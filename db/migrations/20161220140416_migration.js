@@ -12,8 +12,8 @@ exports.up = knex => {
       table.string(`gender`).notNullable().defaultTo(`null`)
       table.float(`height`)
       table.float(`stride_length`)
-      table.integer(`step_count`)
-      table.integer(`step_goal`)
+      table.integer(`step_count`) // maybe not necessary
+      table.integer(`step_goal`) // maybe not necessary
       table.timestamps(true, true)
     })
   })
