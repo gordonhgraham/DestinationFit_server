@@ -31,8 +31,17 @@ router.get(`/:id`, (req, res, next) => {
       headers: { Authorization: `Bearer ${Auth0AccessToken}`, 'content-type': `application/json` }
     }, (error, response, body) => {
       if (error) { throw new Error(error) }
+
       const data = JSON.parse(body)
-      res.send(data.identities[0].access_token)
+
+      request({
+        method: `GET`,
+        url: `https://api.fitbit.com/1/user/-/activities/date/today.json`,
+        headers: { 'Authorization': `Bearer ${data.identities[0].access_token}` }
+      }, (error, response, body) => {
+        if (error) { throw new Error(error) }
+        res.send(body)
+      })
     })
   })
 })
