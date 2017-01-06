@@ -9,7 +9,7 @@ const bodyParser = require(`body-parser`)
 
 // const users = require(`./routes/users`)
 // const auth = require(`./routes/auth`)
-const Auth0API = require(`./routes/Auth0API`)
+const Auth0API = require(`./Auth0API`)
 
 const app = express()
 
