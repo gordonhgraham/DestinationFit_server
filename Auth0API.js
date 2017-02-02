@@ -9,9 +9,9 @@ const apiToken = {
   url: `https://gordonhgraham.auth0.com/oauth/token`,
   headers: { 'content-type': `application/json` },
   body:
-  { client_id: `KQepMq022ynDzHytSOpbAX2YQHhhloPb`,
-    client_secret: `PISdQsGojKxGN1uASlFtNDVG5jnRWJ6iOcwqBhWTOSFr0U2VP4ANGfSpLN0AeLu1`,
-    audience: `https://gordonhgraham.auth0.com/api/v2/`,
+  { client_id: `XXXXXXXX`,
+    client_secret: `XXXXXXXX`,
+    audience: `XXXXXXXX`,
     grant_type: `client_credentials` },
   json: true }
 
@@ -45,8 +45,5 @@ router.get(`/:id`, (req, res, next) => {
     })
   })
 })
-
-// GET--request access token for fitbit API
-// GET--request activity from fitbit API
 
 module.exports = router
